@@ -43,6 +43,13 @@ public class B3AggrInvocationMojo extends AbstractMojo {
 	 * Patho to where the aggregation and temporary files will be
 	 * generated/copied.
 	 */
+	@Parameter(required = false, property = "build-workspace", defaultValue = "${project.basedir}/target/workspace")
+	private String buildWorkspacePath;
+	
+	/**
+	 * Patho to where the aggregation and temporary files will be
+	 * generated/copied.
+	 */
 	@Parameter(required = false, property = "build-root", defaultValue = "${project.basedir}/target/build")
 	private String buildRootPath;
 
@@ -163,8 +170,8 @@ public class B3AggrInvocationMojo extends AbstractMojo {
 
 		Element appArgLine = element("appArgLine",
 				String.format(
-						"-application org.eclipse.b3.cli.headless aggregate --buildModel %s --buildRoot %s --action %s --eclipseLogLevel %s --logLevel %S --stacktrace %s",
-						modelPath, buildRootPath, buildAction, logLevel, logLevel, buildArgs != null ? buildArgs : ""));
+						"-data %s -application org.eclipse.b3.cli.headless aggregate --buildModel %s --buildRoot %s --action %s --eclipseLogLevel %s --logLevel %S --stacktrace %s",
+						buildWorkspacePath, modelPath, buildRootPath, buildAction, logLevel, logLevel, buildArgs != null ? buildArgs : ""));
 
 		Xpp3Dom configuration = configuration(repositories, appArgLine, argLine, dependencies);
 
